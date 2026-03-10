@@ -1,0 +1,1377 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>AS Developers — Adeel | Premium Web & AI Solutions</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,700&family=Syne:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+/* ═══════════════════════════════════
+   THEME VARIABLES
+═══════════════════════════════════ */
+[data-theme="dark"]{
+  --bg:#070709;--bg1:#0d0c10;--bg2:#111013;--card:#131215;
+  --border:rgba(192,57,43,.15);--border2:rgba(192,57,43,.35);
+  --text:#f0ecea;--text2:#8a8088;--text3:#3a3035;
+  --surface:rgba(15,13,18,.95);--nav-bg:rgba(7,7,9,.94);
+  --form-bg:#0c0b0e;--input-bg:#0a090c;
+  --shadow:0 32px 96px rgba(0,0,0,.9);
+}
+[data-theme="light"]{
+  --bg:#f5f3f0;--bg1:#ede9e5;--bg2:#e8e4df;--card:#fff;
+  --border:rgba(160,30,20,.15);--border2:rgba(160,30,20,.4);
+  --text:#18161a;--text2:#6a6068;--text3:#b0aaa8;
+  --surface:rgba(255,255,255,.97);--nav-bg:rgba(245,243,240,.96);
+  --form-bg:#fff;--input-bg:#f5f3f0;
+  --shadow:0 20px 60px rgba(0,0,0,.12);
+}
+:root{
+  --red:#c0392b;--redl:#e04535;--redd:#8b1210;
+  --gold:#c9a96e;--goldd:#9a7a44;
+  --grad:linear-gradient(135deg,#c0392b 0%,#8b1210 100%);
+  --glow:rgba(192,57,43,.3);
+}
+/* ═══════════════════════════════════
+   RESET & BASE
+═══════════════════════════════════ */
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);
+  overflow-x:hidden;transition:background .3s,color .3s}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--red)}
+a{text-decoration:none;color:inherit}
+/* ═══════════════════════════════════
+   ANIMATIONS
+═══════════════════════════════════ */
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes spinSlow{to{transform:rotate(360deg)}}
+@keyframes shimmer{0%{transform:translateX(-100%)}100%{transform:translateX(250%)}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(34,197,94,.45)}50%{box-shadow:0 0 0 8px rgba(34,197,94,0)}}
+/* ═══════════════════════════════════
+   CANVAS BG
+═══════════════════════════════════ */
+#bgc{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
+/* ═══════════════════════════════════
+   NAVIGATION
+═══════════════════════════════════ */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:800;
+  height:68px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 6%;background:var(--nav-bg);
+  backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);
+  border-bottom:1px solid var(--border);transition:all .4s;
+}
+nav.sc{box-shadow:0 4px 40px rgba(0,0,0,.3)}
+.logo{display:flex;align-items:center;gap:12px}
+.logo-mark{
+  width:40px;height:40px;background:var(--grad);flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Playfair Display',serif;font-size:1rem;font-weight:900;color:#fff;
+  position:relative;overflow:hidden;
+}
+.logo-mark::after{
+  content:'';position:absolute;top:0;left:-100%;width:50%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);
+  animation:shimmer 4s infinite;
+}
+.logo-text .l1{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:900;display:block;line-height:1;color:var(--text)}
+.logo-text .l2{font-size:.5rem;letter-spacing:.32em;text-transform:uppercase;color:var(--redl);display:block;margin-top:3px}
+.nav-links{display:flex;gap:32px;list-style:none;align-items:center}
+.nav-links a{
+  font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--text2);transition:color .25s;position:relative;padding-bottom:3px;
+}
+.nav-links a::after{content:'';position:absolute;bottom:0;left:0;width:0;height:1px;background:var(--redl);transition:width .3s}
+.nav-links a:hover{color:var(--text)}.nav-links a:hover::after{width:100%}
+.nav-right{display:flex;align-items:center;gap:10px}
+/* Theme Toggle */
+.theme-btn{
+  width:38px;height:38px;border:1px solid var(--border);background:transparent;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:all .3s;color:var(--text2);
+}
+.theme-btn:hover{border-color:var(--redl);color:var(--redl)}
+.theme-btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round}
+.nav-cta{
+  padding:9px 22px;background:var(--grad);color:#fff!important;
+  font-size:.68rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  border:none;font-family:'Syne',sans-serif;cursor:pointer;
+  transition:all .3s;box-shadow:0 4px 18px var(--glow);
+}
+.nav-cta:hover{transform:translateY(-2px);box-shadow:0 8px 28px var(--glow)}
+.ham{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:2px}
+.ham span{width:20px;height:1.5px;background:var(--text);display:block;transition:all .3s}
+.mob{display:none;flex-direction:column;position:fixed;top:68px;left:0;right:0;
+  background:var(--nav-bg);border-bottom:1px solid var(--border);
+  padding:20px 6%;z-index:799;backdrop-filter:blur(40px)}
+.mob.open{display:flex}
+.mob a{font-size:.82rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--text2);padding:13px 0;border-bottom:1px solid var(--border);transition:color .25s}
+.mob a:hover{color:var(--redl)}
+/* ═══════════════════════════════════
+   HERO
+═══════════════════════════════════ */
+#hero{min-height:100vh;display:flex;align-items:center;padding:100px 6% 80px;position:relative;z-index:1}
+.hero-grid{max-width:1280px;margin:0 auto;width:100%;
+  display:grid;grid-template-columns:1.15fr 1fr;gap:72px;align-items:center}
+/* Left */
+.h-badge{
+  display:inline-flex;align-items:center;gap:10px;
+  font-size:.6rem;font-weight:700;letter-spacing:.3em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:24px;animation:fadeUp .8s ease both;
+}
+.h-badge::before{content:'';width:24px;height:1px;background:var(--gold)}
+.h-badge span{padding:3px 10px;border:1px solid rgba(201,169,110,.3);color:var(--gold)}
+h1.big{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(2.8rem,5.5vw,5.4rem);font-weight:900;line-height:1.0;
+  margin-bottom:18px;animation:fadeUp .8s .1s ease both;
+}
+h1.big em{font-style:italic;color:var(--redl)}
+h1.big .ghost{-webkit-text-stroke:1.5px var(--text3);color:transparent}
+.h-rule{width:56px;height:2px;background:var(--grad);margin-bottom:22px;animation:fadeUp .8s .2s ease both}
+.h-p{font-size:.91rem;color:var(--text2);line-height:1.95;max-width:440px;
+  margin-bottom:38px;animation:fadeUp .8s .3s ease both;font-weight:400}
+.h-p strong{color:var(--text);font-weight:700}
+.h-btns{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:42px;animation:fadeUp .8s .4s ease both}
+.btn-p{
+  padding:13px 34px;background:var(--grad);color:#fff;font-size:.74rem;
+  font-weight:700;letter-spacing:.14em;text-transform:uppercase;border:none;
+  font-family:'Syne',sans-serif;cursor:pointer;transition:all .3s;
+  box-shadow:0 6px 26px var(--glow);display:inline-block;
+}
+.btn-p:hover{transform:translateY(-3px);box-shadow:0 12px 40px var(--glow)}
+.btn-o{
+  padding:13px 34px;background:transparent;color:var(--text);font-size:.74rem;
+  font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  border:1px solid var(--border2);font-family:'Syne',sans-serif;
+  cursor:pointer;transition:all .3s;display:inline-block;
+}
+.btn-o:hover{border-color:var(--redl);color:var(--redl);transform:translateY(-3px)}
+.h-soc{display:flex;gap:8px;flex-wrap:wrap;animation:fadeUp .8s .5s ease both}
+.soc{
+  display:inline-flex;align-items:center;gap:7px;padding:7px 14px;
+  border:1px solid var(--border);font-size:.68rem;font-weight:600;
+  color:var(--text2);letter-spacing:.06em;transition:all .3s;
+}
+.soc:hover{border-color:var(--redl);color:var(--redl);background:rgba(192,57,43,.06)}
+.soc svg{width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;flex-shrink:0}
+/* Profile card */
+.pcard{
+  background:var(--surface);border:1px solid var(--border);
+  padding:34px 30px;position:relative;overflow:hidden;
+  box-shadow:var(--shadow);animation:fadeUp .8s .12s ease both;
+  backdrop-filter:blur(20px);transition:transform .4s,background .3s;
+}
+.pcard:hover{transform:translateY(-5px)}
+.pcard::before{content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(192,57,43,.06),transparent 55%);pointer-events:none}
+.pcard::after{content:'';position:absolute;top:0;left:-200%;width:60%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.025),transparent);
+  animation:shimmer 8s infinite}
+.cn{position:absolute;width:16px;height:16px;border-color:var(--redl);border-style:solid}
+.cn-tl{top:8px;left:8px;border-width:1px 0 0 1px}
+.cn-tr{top:8px;right:8px;border-width:1px 1px 0 0}
+.cn-bl{bottom:8px;left:8px;border-width:0 0 1px 1px}
+.cn-br{bottom:8px;right:8px;border-width:0 1px 1px 0}
+.ph{display:flex;align-items:center;gap:14px;margin-bottom:20px}
+.pav{
+  width:58px;height:58px;background:var(--grad);flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;position:relative;
+  font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:900;color:#fff;
+  box-shadow:0 8px 28px var(--glow);
+}
+.pdot{position:absolute;bottom:-2px;right:-2px;width:12px;height:12px;
+  border-radius:50%;background:#22c55e;border:2px solid var(--bg);animation:pulse 2s infinite}
+.pi h3{font-family:'Playfair Display',serif;font-size:1.22rem;font-weight:700;margin-bottom:3px;color:var(--text)}
+.pi p{font-size:.68rem;color:var(--redl);font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:1px}
+.pi span{font-size:.64rem;color:var(--text3)}
+.ps{width:100%;height:1px;background:var(--border);margin:16px 0}
+.chips{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:16px}
+.chip{padding:3px 10px;border:1px solid var(--border);font-size:.6rem;font-weight:600;
+  color:var(--text2);letter-spacing:.08em;text-transform:uppercase;
+  transition:all .3s;cursor:default}
+.chip:hover{border-color:var(--redl);color:var(--redl)}
+.pstats{display:grid;grid-template-columns:repeat(3,1fr);
+  gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:16px}
+.pst{background:var(--surface);padding:12px 6px;text-align:center;transition:background .3s}
+.pst-n{font-family:'Playfair Display',serif;font-size:1.48rem;font-weight:900;
+  color:var(--redl);display:block;line-height:1;margin-bottom:3px}
+.pst-l{font-size:.56rem;color:var(--text3);font-weight:600;letter-spacing:.12em;text-transform:uppercase}
+.plinks{display:flex;flex-direction:column;gap:6px}
+.plnk{
+  display:flex;align-items:center;gap:10px;padding:8px 11px;
+  border:1px solid var(--border);color:var(--text2);font-size:.75rem;
+  transition:all .3s;font-weight:500;
+}
+.plnk:hover{border-color:var(--redl);color:var(--redl);background:rgba(192,57,43,.05)}
+.plnk-i{width:24px;height:24px;border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .3s}
+.plnk:hover .plnk-i{border-color:var(--redl)}
+.plnk-i svg{width:11px;height:11px;stroke:var(--redl);fill:none;stroke-width:1.8;stroke-linecap:round}
+.plnk-arr{margin-left:auto;opacity:.3;font-size:.62rem}
+.ftag{
+  position:absolute;background:var(--surface);border:1px solid var(--border);
+  padding:6px 13px;display:flex;align-items:center;gap:7px;
+  font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  box-shadow:0 10px 36px rgba(0,0,0,.5);z-index:4;color:var(--text);
+}
+.ft1{top:-14px;left:-14px;animation:float 5s ease-in-out infinite}
+.ft2{bottom:-10px;right:-12px;animation:float 5s ease-in-out 2.5s infinite}
+.dot-g{width:6px;height:6px;border-radius:50%;background:#22c55e;flex-shrink:0}
+.dot-r{width:6px;height:6px;border-radius:50%;background:var(--redl);flex-shrink:0}
+/* ═══════════════════════════════════
+   STATS BAR
+═══════════════════════════════════ */
+#statsbar{
+  background:var(--bg1);border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);padding:0 6%;
+  position:relative;z-index:2;transition:background .3s;
+}
+.srow{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr)}
+.sbox{
+  padding:44px 20px;text-align:center;border-right:1px solid var(--border);
+  position:relative;overflow:hidden;transition:transform .4s;cursor:default;
+}
+.sbox:last-child{border-right:none}
+.sbox:hover{transform:translateY(-4px)}
+.sbox::after{content:'';position:absolute;bottom:0;left:50%;width:0;height:2px;
+  background:var(--grad);transition:width .5s;transform:translateX(-50%)}
+.sbox:hover::after{width:55%}
+.sn{font-family:'Playfair Display',serif;font-size:3.4rem;font-weight:900;
+  color:var(--redl);display:block;line-height:1;margin-bottom:8px}
+.sl{font-size:.65rem;color:var(--text2);font-weight:600;letter-spacing:.14em;text-transform:uppercase}
+/* ═══════════════════════════════════
+   SECTIONS BASE
+═══════════════════════════════════ */
+section{padding:120px 6%;position:relative;z-index:2;transition:background .3s}
+.s-head{text-align:center;margin-bottom:72px}
+.s-tag{display:inline-flex;align-items:center;gap:10px;font-size:.6rem;
+  font-weight:700;letter-spacing:.28em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:14px}
+.s-tag::before,.s-tag::after{content:'';width:20px;height:1px;background:var(--gold)}
+.s-title{font-family:'Playfair Display',serif;
+  font-size:clamp(1.9rem,3.8vw,3.2rem);font-weight:900;line-height:1.08;
+  margin-bottom:14px;color:var(--text)}
+.s-sub{font-size:.88rem;color:var(--text2);max-width:500px;margin:0 auto;
+  line-height:1.92;font-weight:400}
+.inner{max-width:1280px;margin:0 auto}
+/* ═══════════════════════════════════
+   SERVICES
+═══════════════════════════════════ */
+#services{background:var(--bg)}
+.svcs{display:grid;grid-template-columns:repeat(3,1fr);
+  gap:1px;background:var(--border);border:1px solid var(--border)}
+.svc{
+  background:var(--bg);padding:40px 32px;
+  position:relative;overflow:hidden;transition:background .4s;cursor:default;
+}
+.svc::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;
+  background:var(--grad);transform:scaleX(0);transition:transform .5s;transform-origin:left}
+.svc:hover{background:var(--card)}.svc:hover::after{transform:scaleX(1)}
+.svc-num{font-family:'Playfair Display',serif;font-size:.72rem;color:var(--text3);
+  letter-spacing:.2em;display:block;margin-bottom:20px}
+.svc-ic{width:44px;height:44px;border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;margin-bottom:18px;transition:all .4s}
+.svc:hover .svc-ic{border-color:var(--redl);background:rgba(192,57,43,.08)}
+.svc-ic svg{width:19px;height:19px;stroke:var(--redl);fill:none;stroke-width:1.5;
+  stroke-linecap:round;stroke-linejoin:round}
+.svc-t{font-family:'Playfair Display',serif;font-size:1.18rem;font-weight:700;
+  margin-bottom:11px;color:var(--text)}
+.svc-d{font-size:.82rem;color:var(--text2);line-height:1.88;margin-bottom:18px;font-weight:400}
+.stags{display:flex;flex-wrap:wrap;gap:5px}
+.stag{font-size:.58rem;padding:2px 8px;border:1px solid var(--border);
+  color:var(--text3);letter-spacing:.08em;text-transform:uppercase}
+/* ═══════════════════════════════════
+   ABOUT
+═══════════════════════════════════ */
+#about{background:var(--bg1)}
+.abt-grid{display:grid;grid-template-columns:1fr 1fr;gap:76px;align-items:start}
+.albl{font-size:.6rem;font-weight:700;letter-spacing:.28em;text-transform:uppercase;
+  color:var(--gold);display:inline-flex;align-items:center;gap:9px;margin-bottom:14px}
+.albl::before{content:'';width:18px;height:1px;background:var(--gold)}
+.atitle{font-family:'Playfair Display',serif;font-size:clamp(1.7rem,3vw,2.7rem);
+  font-weight:900;line-height:1.06;margin-bottom:20px;color:var(--text)}
+.atitle em{font-style:italic;color:var(--redl)}
+.ap{font-size:.87rem;color:var(--text2);line-height:1.95;margin-bottom:14px;font-weight:400}
+.alist{list-style:none;display:flex;flex-direction:column;gap:12px;margin:18px 0 34px}
+.alist li{display:flex;align-items:flex-start;gap:12px;font-size:.84rem;color:var(--text2);line-height:1.78}
+.chk{width:18px;height:18px;min-width:18px;border:1px solid var(--red);
+  display:flex;align-items:center;justify-content:center;margin-top:2px}
+.chk svg{width:9px;height:9px;stroke:var(--redl);fill:none;stroke-width:2.5}
+/* Skill panel */
+.skp{
+  background:var(--surface);border:1px solid var(--border);
+  padding:36px 32px;position:relative;backdrop-filter:blur(10px);
+  transition:background .3s;
+}
+.skp::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--grad)}
+.skp-t{font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:700;
+  margin-bottom:22px;color:var(--text)}
+.techg{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin-bottom:30px}
+.tr{display:flex;align-items:center;gap:9px;padding:8px 10px;border:1px solid var(--border);
+  font-size:.74rem;color:var(--text2);transition:all .3s;cursor:default}
+.tr:hover{border-color:var(--redl);color:var(--text);background:rgba(192,57,43,.05)}
+.tr svg{width:11px;height:11px;stroke:var(--redl);fill:none;stroke-width:2;flex-shrink:0}
+.bar{margin-bottom:16px}
+.bt{display:flex;justify-content:space-between;font-size:.7rem;margin-bottom:6px}
+.bt span:first-child{font-weight:700;color:var(--text);letter-spacing:.08em;text-transform:uppercase}
+.bt span:last-child{color:var(--redl);font-weight:900;font-family:'Playfair Display',serif}
+.btrack{height:2px;background:var(--bg2);position:relative;transition:background .3s}
+.bfill{position:absolute;left:0;top:0;height:100%;background:var(--grad);width:0;
+  transition:width 2s cubic-bezier(.4,0,.2,1)}
+/* ═══════════════════════════════════
+   CAREER
+═══════════════════════════════════ */
+#career{background:var(--bg)}
+.cgrid{display:grid;grid-template-columns:repeat(3,1fr);
+  gap:1px;background:var(--border);border:1px solid var(--border)}
+.cs{background:var(--bg);padding:40px 32px;position:relative;overflow:hidden;
+  transition:background .4s;cursor:default}
+.cs:hover{background:var(--card)}
+.cs::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:var(--grad);transform:scaleX(0);transition:transform .5s;transform-origin:left}
+.cs:hover::after{transform:scaleX(1)}
+.cnum{font-family:'Playfair Display',serif;font-size:4rem;font-weight:900;
+  color:var(--redl);opacity:.07;line-height:1;margin-bottom:12px}
+.ci{width:42px;height:42px;border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;margin-bottom:16px;transition:all .4s}
+.cs:hover .ci{border-color:var(--redl);background:rgba(192,57,43,.08)}
+.ci svg{width:17px;height:17px;stroke:var(--redl);fill:none;stroke-width:1.5;stroke-linecap:round}
+.ct{font-family:'Playfair Display',serif;font-size:1.18rem;font-weight:700;
+  margin-bottom:12px;color:var(--text)}
+.cd{font-size:.82rem;color:var(--text2);line-height:1.85;font-weight:400}
+/* ═══════════════════════════════════
+   PORTFOLIO
+═══════════════════════════════════ */
+#portfolio{background:var(--bg1)}
+.pgrid{display:grid;grid-template-columns:repeat(3,1fr);
+  gap:1px;background:var(--border);border:1px solid var(--border)}
+.pj{background:var(--bg1);overflow:hidden;transition:background .4s;cursor:pointer}
+.pj:hover{background:var(--card)}
+.pthumb{height:168px;display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden}
+.pthumb svg{width:50px;height:50px;stroke:rgba(192,57,43,.2);fill:none;stroke-width:.7;transition:all .5s}
+.pj:hover .pthumb svg{stroke:var(--redl);transform:scale(1.12) rotate(4deg)}
+.pthumb::after{content:'';position:absolute;inset:0;
+  background:linear-gradient(transparent 40%,var(--bg1));transition:.4s}
+.pj:hover .pthumb::after{background:linear-gradient(transparent 40%,var(--card))}
+.pb1{background:linear-gradient(135deg,#100308,#1e0c14)}
+.pb2{background:linear-gradient(135deg,#0e0512,#1a0c1e)}
+.pb3{background:linear-gradient(135deg,#06090f,#0c1220)}
+.pb4{background:linear-gradient(135deg,#140206,#220808)}
+.pb5{background:linear-gradient(135deg,#040710,#0a0e1c)}
+.pb6{background:linear-gradient(135deg,#0c0210,#1c041e)}
+.pb{padding:18px 22px 24px}
+.pcat{font-size:.58rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--redl);margin-bottom:6px}
+.ptit{font-family:'Playfair Display',serif;font-size:1.08rem;font-weight:700;margin-bottom:8px;color:var(--text)}
+.pdesc{font-size:.79rem;color:var(--text2);line-height:1.72;margin-bottom:11px;font-weight:400}
+.ptag{font-size:.57rem;padding:2px 7px;border:1px solid var(--border);
+  color:var(--text3);letter-spacing:.08em;text-transform:uppercase;display:inline-block;margin:2px 2px 0 0}
+/* ═══════════════════════════════════
+   WORK STYLE
+═══════════════════════════════════ */
+#workstyle{background:var(--bg)}
+.wgrid{display:grid;grid-template-columns:repeat(2,1fr);
+  gap:1px;background:var(--border);border:1px solid var(--border)}
+.ws{background:var(--bg);padding:40px 32px;position:relative;overflow:hidden;
+  transition:background .4s;cursor:default}
+.ws::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:var(--grad);transform:scaleX(0);transition:transform .5s;transform-origin:left}
+.ws:hover{background:var(--card)}.ws:hover::after{transform:scaleX(1)}
+.wsi{width:44px;height:44px;border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;margin-bottom:18px;transition:all .4s}
+.ws:hover .wsi{border-color:var(--redl);background:rgba(192,57,43,.08)}
+.wsi svg{width:18px;height:18px;stroke:var(--redl);fill:none;stroke-width:1.5;stroke-linecap:round}
+.wst{font-family:'Playfair Display',serif;font-size:1.18rem;font-weight:700;margin-bottom:11px;color:var(--text)}
+.wsd{font-size:.83rem;color:var(--text2);line-height:1.88;font-weight:400}
+/* ═══════════════════════════════════
+   TOOLS
+═══════════════════════════════════ */
+#tools{background:var(--bg1)}
+.tgrid{display:grid;grid-template-columns:repeat(3,1fr);
+  gap:1px;background:var(--border);border:1px solid var(--border)}
+.tc{background:var(--bg1);padding:40px 32px;position:relative;overflow:hidden;
+  transition:background .4s;cursor:default}
+.tc::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;
+  background:var(--grad);transform:scaleX(0);transition:transform .5s;transform-origin:left}
+.tc:hover{background:var(--card)}.tc:hover::after{transform:scaleX(1)}
+.tci{width:44px;height:44px;border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;margin-bottom:18px;transition:all .4s}
+.tc:hover .tci{border-color:var(--redl);background:rgba(192,57,43,.08)}
+.tci svg{width:19px;height:19px;stroke:var(--redl);fill:none;stroke-width:1.5;stroke-linecap:round}
+.tct{font-family:'Playfair Display',serif;font-size:1.12rem;font-weight:700;margin-bottom:12px;color:var(--text)}
+.tcd{font-size:.82rem;color:var(--text2);line-height:1.88;font-weight:400}
+.pills{display:flex;flex-wrap:wrap;gap:5px;margin-top:14px}
+.pill{font-size:.58rem;padding:3px 9px;border:1px solid var(--border);
+  color:var(--text3);letter-spacing:.08em;text-transform:uppercase}
+/* ═══════════════════════════════════
+   TESTIMONIALS
+═══════════════════════════════════ */
+#testimonials{background:var(--bg)}
+.tstg{display:grid;grid-template-columns:repeat(3,1fr);
+  gap:1px;background:var(--border);border:1px solid var(--border)}
+.tst{background:var(--bg);padding:30px 26px;position:relative;overflow:hidden;
+  transition:background .4s}
+.tst::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:var(--grad);transform:scaleX(0);transition:transform .5s;transform-origin:left}
+.tst:hover{background:var(--card)}.tst:hover::after{transform:scaleX(1)}
+.stars{display:flex;gap:3px;margin-bottom:11px}
+.stars svg{width:10px;height:10px;fill:var(--gold)}
+.qm{font-family:'Playfair Display',serif;font-size:2.6rem;color:var(--red);opacity:.2;line-height:.8;margin-bottom:6px}
+.ttxt{font-size:.83rem;color:var(--text2);line-height:1.88;margin-bottom:18px;font-style:italic}
+.tauth{display:flex;align-items:center;gap:10px}
+.tav{width:36px;height:36px;border:1px solid var(--border);flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Playfair Display',serif;font-weight:700;font-size:.88rem;
+  color:var(--redl);background:rgba(192,57,43,.07)}
+.tname{font-weight:700;font-size:.8rem;color:var(--text)}
+.trole{font-size:.66rem;color:var(--text3)}
+/* ═══════════════════════════════════
+   CONTACT
+═══════════════════════════════════ */
+#contact{background:var(--bg1)}
+.cgrid2{display:grid;grid-template-columns:1fr 1.75fr;gap:64px;align-items:start}
+.cifo h3{font-family:'Playfair Display',serif;font-size:1.85rem;font-weight:900;
+  margin-bottom:12px;color:var(--text)}
+.cifo h3 em{font-style:italic;color:var(--redl)}
+.cifo p{font-size:.85rem;color:var(--text2);line-height:1.92;margin-bottom:28px;font-weight:400}
+.clinks{display:flex;flex-direction:column;gap:8px}
+.clnk{display:flex;align-items:center;gap:12px;padding:12px 14px;
+  border:1px solid var(--border);color:var(--text);transition:all .3s}
+.clnk:hover{border-color:var(--redl);background:rgba(192,57,43,.05);transform:translateX(5px)}
+.clnk-ic{width:30px;height:30px;border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .3s}
+.clnk:hover .clnk-ic{border-color:var(--redl);background:rgba(192,57,43,.1)}
+.clnk-ic svg{width:12px;height:12px;stroke:var(--redl);fill:none;stroke-width:1.8;stroke-linecap:round}
+.clbl{font-size:.6rem;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:1px}
+.cval{font-size:.83rem;font-weight:700;color:var(--text)}
+.cform{background:var(--surface);border:1px solid var(--border);
+  padding:40px 38px;position:relative;backdrop-filter:blur(10px);transition:background .3s}
+.cform::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--grad)}
+.cform h3{font-family:'Playfair Display',serif;font-size:1.38rem;font-weight:700;
+  margin-bottom:26px;color:var(--text)}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.fg{display:flex;flex-direction:column;gap:5px;margin-bottom:13px}
+.fg label{font-size:.6rem;font-weight:700;color:var(--text2);letter-spacing:.14em;text-transform:uppercase}
+.fg input,.fg select,.fg textarea{
+  background:var(--input-bg);border:1px solid var(--border);
+  padding:10px 12px;font-size:.83rem;color:var(--text);font-family:'Syne',sans-serif;
+  outline:none;resize:none;transition:border-color .3s,background .3s;width:100%;
+}
+.fg input::placeholder,.fg textarea::placeholder{color:var(--text3)}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--redl)}
+.fg select option{background:var(--bg)}
+.fg textarea{height:105px}
+.fbtn{
+  width:100%;padding:12px;font-size:.74rem;font-weight:700;
+  letter-spacing:.16em;text-transform:uppercase;background:var(--grad);color:#fff;
+  border:none;cursor:pointer;font-family:'Syne',sans-serif;
+  transition:all .3s;box-shadow:0 4px 24px var(--glow);margin-top:3px;
+}
+.fbtn:hover{opacity:.88;transform:translateY(-2px)}
+.fok{display:none;margin-top:12px;padding:10px 14px;border:1px solid #22c55e;
+  background:rgba(34,197,94,.06);color:#22c55e;font-size:.74rem;font-weight:600;
+  letter-spacing:.08em;text-transform:uppercase}
+/* ═══════════════════════════════════
+   FOOTER
+═══════════════════════════════════ */
+footer{background:var(--bg2);border-top:1px solid var(--border);
+  padding:56px 6% 36px;position:relative;z-index:2;transition:background .3s}
+.ft-in{max-width:1280px;margin:0 auto}
+.ft-top{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:50px;margin-bottom:48px}
+.fc h4{font-family:'Playfair Display',serif;font-size:.92rem;font-weight:700;
+  margin-bottom:16px;color:var(--text)}
+.fc ul{list-style:none;display:flex;flex-direction:column;gap:9px}
+.fc ul a{font-size:.79rem;color:var(--text2);transition:color .25s}
+.fc ul a:hover{color:var(--redl)}
+.ft-bot{display:flex;align-items:center;justify-content:space-between;
+  padding-top:24px;border-top:1px solid var(--border);flex-wrap:wrap;gap:10px}
+.ftcopy{font-size:.68rem;color:var(--text3);letter-spacing:.05em}
+.ftlnks{display:flex;gap:18px}
+.ftlnks a{font-size:.68rem;color:var(--text3);transition:color .25s}
+.ftlnks a:hover{color:var(--redl)}
+/* ═══════════════════════════════════
+   BACK TO TOP
+═══════════════════════════════════ */
+.btt{
+  position:fixed;bottom:26px;right:26px;width:42px;height:42px;
+  background:var(--grad);border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;transform:translateY(12px);transition:all .4s;
+  z-index:700;box-shadow:0 4px 22px var(--glow);
+}
+.btt.show{opacity:1;transform:translateY(0)}.btt:hover{transform:translateY(-3px)!important}
+.btt svg{width:15px;height:15px;stroke:#fff;fill:none;stroke-width:2.5;stroke-linecap:round}
+/* ═══════════════════════════════════
+   REVEAL
+═══════════════════════════════════ */
+.rv{opacity:0;transform:translateY(24px);transition:opacity .85s ease,transform .85s ease}
+.rv.vis{opacity:1;transform:translateY(0)}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}
+/* ═══════════════════════════════════
+   AI CHATBOT WIDGET
+═══════════════════════════════════ */
+.chat-fab{
+  position:fixed;bottom:80px;right:26px;
+  width:54px;height:54px;background:var(--grad);
+  border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  z-index:700;box-shadow:0 6px 32px var(--glow);
+  transition:all .3s;border-radius:0;
+}
+.chat-fab:hover{transform:translateY(-3px);box-shadow:0 10px 40px var(--glow)}
+.chat-fab svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:1.8;stroke-linecap:round}
+.chat-fab .chat-badge{
+  position:absolute;top:-4px;right:-4px;width:16px;height:16px;
+  background:#22c55e;border-radius:50%;border:2px solid var(--bg);
+  animation:pulse 2s infinite;
+}
+.chat-window{
+  position:fixed;bottom:148px;right:26px;
+  width:360px;max-height:520px;
+  background:var(--surface);border:1px solid var(--border);
+  display:flex;flex-direction:column;
+  box-shadow:0 24px 80px rgba(0,0,0,.4);
+  z-index:700;opacity:0;transform:translateY(16px) scale(.97);
+  pointer-events:none;transition:all .35s cubic-bezier(.4,0,.2,1);
+  backdrop-filter:blur(20px);
+}
+.chat-window.open{opacity:1;transform:translateY(0) scale(1);pointer-events:all}
+.chat-head{
+  padding:14px 16px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:10px;
+  background:var(--grad);
+}
+.chat-av{
+  width:32px;height:32px;border:2px solid rgba(255,255,255,.3);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  font-family:'Playfair Display',serif;font-weight:900;font-size:.85rem;color:#fff;
+}
+.chat-hinfo h4{font-size:.82rem;font-weight:700;color:#fff}
+.chat-hinfo span{font-size:.6rem;color:rgba(255,255,255,.7);display:flex;align-items:center;gap:4px}
+.chat-hinfo span::before{content:'';width:5px;height:5px;border-radius:50%;background:#22c55e;flex-shrink:0}
+.chat-close{margin-left:auto;background:none;border:none;cursor:pointer;
+  color:rgba(255,255,255,.6);transition:color .2s;display:flex;align-items:center}
+.chat-close:hover{color:#fff}
+.chat-close svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round}
+.chat-msgs{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;min-height:200px}
+.chat-msgs::-webkit-scrollbar{width:2px}
+.chat-msgs::-webkit-scrollbar-thumb{background:var(--border)}
+.msg{max-width:86%;font-size:.8rem;line-height:1.6;padding:9px 13px;word-break:break-word}
+.msg-bot{align-self:flex-start;background:var(--bg2);color:var(--text);border:1px solid var(--border)}
+.msg-user{align-self:flex-end;background:var(--grad);color:#fff}
+.msg-typing{align-self:flex-start;background:var(--bg2);color:var(--text2);
+  border:1px solid var(--border);padding:9px 13px;font-size:.78rem;font-style:italic}
+.msg-typing::after{content:'...';animation:blink 1.2s infinite}
+.chat-footer{padding:12px 14px;border-top:1px solid var(--border);display:flex;gap:8px}
+.chat-input{
+  flex:1;background:var(--input-bg);border:1px solid var(--border);
+  padding:9px 12px;font-size:.8rem;color:var(--text);
+  font-family:'Syne',sans-serif;outline:none;transition:border-color .3s;
+  resize:none;height:38px;
+}
+.chat-input::placeholder{color:var(--text3)}
+.chat-input:focus{border-color:var(--redl)}
+.chat-send{
+  width:38px;height:38px;background:var(--grad);border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:opacity .3s;flex-shrink:0;
+}
+.chat-send:hover{opacity:.85}
+.chat-send svg{width:14px;height:14px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round}
+.chat-note{font-size:.58rem;color:var(--text3);text-align:center;padding:4px 14px 10px;letter-spacing:.04em}
+/* ═══════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════ */
+@media(max-width:1050px){
+  .hero-grid{grid-template-columns:1fr;gap:52px}
+  .hero-right{order:-1}
+  .abt-grid{grid-template-columns:1fr;gap:44px}
+  .ft-top{grid-template-columns:1fr 1fr;gap:34px}
+}
+@media(max-width:860px){
+  .svcs{grid-template-columns:1fr 1fr}
+  .pgrid{grid-template-columns:1fr 1fr}
+  .tstg{grid-template-columns:1fr}
+  .tgrid{grid-template-columns:1fr 1fr}
+  .wgrid{grid-template-columns:1fr}
+  .cgrid2{grid-template-columns:1fr;gap:40px}
+  .srow{grid-template-columns:repeat(2,1fr)}
+  .sbox:nth-child(2){border-right:none}
+  .sbox:nth-child(3){border-top:1px solid var(--border)}
+  .cgrid{grid-template-columns:1fr}
+  .chat-window{width:calc(100vw - 32px);right:16px;bottom:140px}
+}
+@media(max-width:680px){
+  .nav-links,.nav-cta{display:none}.ham{display:flex}
+  .svcs,.pgrid,.tgrid{grid-template-columns:1fr}
+  section{padding:80px 5%}
+  .frow{grid-template-columns:1fr}
+  .ft-top{grid-template-columns:1fr}
+  .cform{padding:24px 20px}
+  h1.big{font-size:2.6rem}
+}
+</style>
+</head>
+<body>
+
+<!-- BG CANVAS -->
+<canvas id="bgc"></canvas>
+
+<!-- ══ NAV ══ -->
+<nav id="nav">
+  <a href="#hero" class="logo">
+    <div class="logo-mark">AS</div>
+    <div class="logo-text"><span class="l1">AS Developers</span><span class="l2">Web · AI · Full-Stack</span></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#portfolio">Portfolio</a></li>
+    <li><a href="#career">Journey</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="Toggle light/dark mode">
+      <svg id="themeIcon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <a href="https://wa.me/923023181415" target="_blank" rel="noopener" class="nav-cta">Hire Me</a>
+    <button class="ham" onclick="toggleMob()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+<div class="mob" id="mob">
+  <a href="#services" onclick="closeMob()">Services</a>
+  <a href="#about" onclick="closeMob()">About</a>
+  <a href="#portfolio" onclick="closeMob()">Portfolio</a>
+  <a href="#career" onclick="closeMob()">Career Journey</a>
+  <a href="#tools" onclick="closeMob()">Tools & Stack</a>
+  <a href="#contact" onclick="closeMob()">Contact</a>
+</div>
+
+<!-- ══ HERO ══ -->
+<section id="hero">
+  <div class="hero-grid inner">
+    <!-- Left Text -->
+    <div>
+      <div class="h-badge"><span>Pakistan · Remote Worldwide</span></div>
+      <h1 class="big">Building<br><em>Digital</em><br><span class="ghost">Excellence</span></h1>
+      <div class="h-rule"></div>
+      <p class="h-p">
+        I'm Adeel — Founder of <strong>AS Developers</strong>. I build high-performance websites, intelligent AI chatbots, and complete web applications for clients around the world. Fast delivery. Clean code. Real results.
+      </p>
+      <div class="h-btns">
+        <a href="#portfolio" class="btn-p">View My Work</a>
+        <a href="#contact" class="btn-o">Start a Project</a>
+      </div>
+      <div class="h-soc">
+        <a href="https://www.linkedin.com/in/adeel-developer-78b6183b5" target="_blank" rel="noopener" class="soc">
+          <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>LinkedIn
+        </a>
+        <a href="https://wa.me/923023181415" target="_blank" rel="noopener" class="soc">
+          <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>WhatsApp
+        </a>
+        <a href="mailto:adeela524@gmail.com" class="soc">
+          <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>Email
+        </a>
+        <a href="#" class="soc">
+          <svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>GitHub
+        </a>
+      </div>
+    </div>
+    <!-- Right Profile Card -->
+    <div class="hero-right" style="position:relative">
+      <div class="ftag ft1"><div class="dot-g"></div>Available for Projects</div>
+      <div class="pcard">
+        <div class="cn cn-tl"></div><div class="cn cn-tr"></div>
+        <div class="cn cn-bl"></div><div class="cn cn-br"></div>
+        <div class="ph">
+          <div class="pav">A<div class="pdot"></div></div>
+          <div class="pi">
+            <h3>AS Developers</h3>
+            <p>Full-Stack &amp; AI Developer</p>
+            <span>📍 Pakistan · Remote Worldwide</span>
+          </div>
+        </div>
+        <div class="ps"></div>
+        <div class="chips">
+          <span class="chip">React</span><span class="chip">Node.js</span>
+          <span class="chip">AI / ML</span><span class="chip">Python</span>
+          <span class="chip">Next.js</span><span class="chip">UI/UX</span>
+        </div>
+        <div class="pstats">
+          <div class="pst"><span class="pst-n">30+</span><span class="pst-l">Projects</span></div>
+          <div class="pst"><span class="pst-n">5+</span><span class="pst-l">Years</span></div>
+          <div class="pst"><span class="pst-n">98%</span><span class="pst-l">Satisfied</span></div>
+        </div>
+        <div class="plinks">
+          <a href="mailto:adeela524@gmail.com" class="plnk">
+            <div class="plnk-i"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+            adeela524@gmail.com<span class="plnk-arr">→</span>
+          </a>
+          <a href="https://wa.me/923023181415" target="_blank" rel="noopener" class="plnk">
+            <div class="plnk-i"><svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></div>
+            +92 302 3181 415<span class="plnk-arr">→</span>
+          </a>
+          <a href="https://www.linkedin.com/in/adeel-developer-78b6183b5" target="_blank" rel="noopener" class="plnk">
+            <div class="plnk-i"><svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></div>
+            LinkedIn Profile<span class="plnk-arr">→</span>
+          </a>
+        </div>
+      </div>
+      <div class="ftag ft2"><div class="dot-r"></div>5-Star Rated</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ STATS ══ -->
+<div id="statsbar">
+  <div class="srow">
+    <div class="sbox rv"><span class="sn" data-count="30">0</span><span class="sl">Projects Shipped</span></div>
+    <div class="sbox rv d1"><span class="sn" data-count="98">0</span><span class="sl">% Client Satisfaction</span></div>
+    <div class="sbox rv d2"><span class="sn" data-count="5">0</span><span class="sl">Years Experience</span></div>
+    <div class="sbox rv d3"><span class="sn" data-count="100">0</span><span class="sl">% On-Time Delivery</span></div>
+  </div>
+</div>
+
+<!-- ══ SERVICES ══ -->
+<section id="services">
+  <div class="inner">
+    <div class="s-head rv">
+      <div class="s-tag">What I Offer</div>
+      <h2 class="s-title">Premium Services</h2>
+      <p class="s-sub">Whether you need a stunning website, an AI chatbot, or a full-stack application — I build solutions that work, look exceptional, and deliver measurable results.</p>
+    </div>
+    <div class="svcs">
+      <div class="svc rv">
+        <span class="svc-num">01</span>
+        <div class="svc-ic"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></div>
+        <div class="svc-t">Website Development</div>
+        <p class="svc-d">I build modern, fast-loading websites that look stunning on every device. From simple landing pages to complex multi-page platforms — designed to attract visitors and convert them into paying customers.</p>
+        <div class="stags"><span class="stag">React</span><span class="stag">Next.js</span><span class="stag">WordPress</span><span class="stag">Tailwind</span></div>
+      </div>
+      <div class="svc rv d1">
+        <span class="svc-num">02</span>
+        <div class="svc-ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg></div>
+        <div class="svc-t">AI Chatbot Development</div>
+        <p class="svc-d">Custom AI chatbots powered by GPT-4 that answer customer questions, capture leads, and handle support — 24 hours a day, 7 days a week. Your business keeps working even when you sleep.</p>
+        <div class="stags"><span class="stag">OpenAI</span><span class="stag">LangChain</span><span class="stag">Python</span><span class="stag">API</span></div>
+      </div>
+      <div class="svc rv d2">
+        <span class="svc-num">03</span>
+        <div class="svc-ic"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+        <div class="svc-t">Full-Stack Applications</div>
+        <p class="svc-d">Complete web applications with powerful backends, secure databases, and user-friendly interfaces. I handle everything — frontend, backend, database, and hosting — so you get a working product, not just a design.</p>
+        <div class="stags"><span class="stag">Node.js</span><span class="stag">MongoDB</span><span class="stag">REST API</span><span class="stag">PostgreSQL</span></div>
+      </div>
+      <div class="svc rv">
+        <span class="svc-num">04</span>
+        <div class="svc-ic"><svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg></div>
+        <div class="svc-t">E-Commerce Solutions</div>
+        <p class="svc-d">Online stores that make selling easy — smooth product browsing, secure checkout, payment gateway integration, and an admin panel to manage everything. Built to handle sales from day one.</p>
+        <div class="stags"><span class="stag">Shopify</span><span class="stag">WooCommerce</span><span class="stag">Stripe</span></div>
+      </div>
+      <div class="svc rv d1">
+        <span class="svc-num">05</span>
+        <div class="svc-ic"><svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg></div>
+        <div class="svc-t">AI &amp; Machine Learning</div>
+        <p class="svc-d">Integrate artificial intelligence into your existing products or build new AI-powered tools. From recommendation systems to data analysis — I bring smart automation to your business workflow.</p>
+        <div class="stags"><span class="stag">TensorFlow</span><span class="stag">OpenAI</span><span class="stag">Python</span></div>
+      </div>
+      <div class="svc rv d2">
+        <span class="svc-num">06</span>
+        <div class="svc-ic"><svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+        <div class="svc-t">SEO &amp; Performance</div>
+        <p class="svc-d">A beautiful website means nothing if no one finds it. I optimize your site to rank higher on Google, load in under 2 seconds, and convert more visitors — so your investment pays off long-term.</p>
+        <div class="stags"><span class="stag">Core Web Vitals</span><span class="stag">On-Page SEO</span><span class="stag">Speed</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ ABOUT ══ -->
+<section id="about">
+  <div class="inner">
+    <div class="abt-grid">
+      <div class="rv">
+        <div class="albl">About Me</div>
+        <h2 class="atitle">Full-Stack Developer.<br><em>Problem Solver.</em></h2>
+        <p class="ap">I'm Adeel — founder of AS Developers with 5+ years building web solutions for clients across Pakistan, UAE, Saudi Arabia, UK, and beyond. I've worked with startups, agencies, and enterprise teams.</p>
+        <p class="ap">What makes me different? I don't just write code. I understand your business goals, suggest the right approach, and deliver work that actually solves problems — on time, every time.</p>
+        <ul class="alist">
+          <li><div class="chk"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>I manage your entire project — from first design to final deployment. No middlemen.</li>
+          <li><div class="chk"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>Clear communication in English and Urdu. Updates every step of the way.</li>
+          <li><div class="chk"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>AI chatbot specialist — I build bots that feel like real support agents.</li>
+          <li><div class="chk"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>Remote-first with flexible hours to suit your time zone, worldwide.</li>
+        </ul>
+        <a href="https://wa.me/923023181415" target="_blank" rel="noopener" class="btn-p">Chat on WhatsApp →</a>
+      </div>
+      <div class="skp rv d1">
+        <h3 class="skp-t">Skills &amp; Expertise</h3>
+        <div class="techg">
+          <div class="tr"><svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>React / Next.js</div>
+          <div class="tr"><svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>Vue.js / TypeScript</div>
+          <div class="tr"><svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>Node.js / Express</div>
+          <div class="tr"><svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>PostgreSQL / MongoDB</div>
+          <div class="tr"><svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>Python / AI / ML</div>
+          <div class="tr"><svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>Docker / AWS / Vercel</div>
+          <div class="tr"><svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>Tailwind CSS / SASS</div>
+          <div class="tr"><svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>Figma / UI/UX Design</div>
+        </div>
+        <div class="bar"><div class="bt"><span>Front-End</span><span>95%</span></div><div class="btrack"><div class="bfill" data-w="95"></div></div></div>
+        <div class="bar"><div class="bt"><span>Back-End</span><span>88%</span></div><div class="btrack"><div class="bfill" data-w="88"></div></div></div>
+        <div class="bar"><div class="bt"><span>AI / Chatbots</span><span>85%</span></div><div class="btrack"><div class="bfill" data-w="85"></div></div></div>
+        <div class="bar"><div class="bt"><span>DevOps / Cloud</span><span>80%</span></div><div class="btrack"><div class="bfill" data-w="80"></div></div></div>
+        <div class="bar"><div class="bt"><span>UI / UX Design</span><span>92%</span></div><div class="btrack"><div class="bfill" data-w="92"></div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CAREER ══ -->
+<section id="career">
+  <div class="inner">
+    <div class="s-head rv">
+      <div class="s-tag">My Journey</div>
+      <h2 class="s-title">Career Timeline</h2>
+      <p class="s-sub">From writing my first line of code to leading full-stack and AI projects worldwide — a path built on continuous learning and real-world results.</p>
+    </div>
+    <div class="cgrid">
+      <div class="cs rv">
+        <div class="cnum">01</div>
+        <div class="ci"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+        <div class="ct">Junior Developer</div>
+        <p class="cd">Started with HTML, CSS, and JavaScript — building small websites and learning the fundamentals of clean, well-structured code. Contributed to real client projects and developed strong version control habits with Git.</p>
+      </div>
+      <div class="cs rv d1">
+        <div class="cnum">02</div>
+        <div class="ci"><svg viewBox="0 0 24 24"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div>
+        <div class="ct">Mid-Level Engineer</div>
+        <p class="cd">Led feature development on React-based single-page apps. Mentored junior developers, built REST APIs from scratch, improved deployment pipelines, and started delivering complex full-stack solutions independently.</p>
+      </div>
+      <div class="cs rv d2">
+        <div class="cnum">03</div>
+        <div class="ci"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+        <div class="ct">Senior / Lead Dev</div>
+        <p class="cd">Now architecting scalable systems, integrating AI and machine learning solutions, and working directly with clients across Pakistan, UAE, UK and beyond. Focused on delivering premium products that create real business impact.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PORTFOLIO ══ -->
+<section id="portfolio">
+  <div class="inner">
+    <div class="s-head rv">
+      <div class="s-tag">Selected Work</div>
+      <h2 class="s-title">Portfolio Highlights</h2>
+      <p class="s-sub">Real projects, real results. All code available on GitHub — live demos and detailed walkthroughs provided on request.</p>
+    </div>
+    <div class="pgrid">
+      <div class="pj rv">
+        <div class="pthumb pb1"><svg viewBox="0 0 80 80"><rect x="10" y="10" width="60" height="60" rx="4"/><path d="M10 30h60M30 10v60"/></svg></div>
+        <div class="pb">
+          <div class="pcat">E-Commerce</div>
+          <div class="ptit">LuxeMarket — Fashion Store</div>
+          <p class="pdesc">Full online store with AI product recommendations, admin dashboard, and Stripe payments. Client reported 40% increase in monthly sales after launch.</p>
+          <span class="ptag">Next.js</span><span class="ptag">Stripe</span><span class="ptag">MongoDB</span>
+        </div>
+      </div>
+      <div class="pj rv d1">
+        <div class="pthumb pb2"><svg viewBox="0 0 80 80"><circle cx="40" cy="36" r="22"/><path d="M28 60l12-24 12 24"/></svg></div>
+        <div class="pb">
+          <div class="pcat">AI Chatbot</div>
+          <div class="ptit">SupportAI — Customer Bot</div>
+          <p class="pdesc">GPT-4 chatbot handling 400+ customer queries per week — saving the client 20+ hours of manual support work every single week.</p>
+          <span class="ptag">OpenAI</span><span class="ptag">LangChain</span><span class="ptag">Node.js</span>
+        </div>
+      </div>
+      <div class="pj rv d2">
+        <div class="pthumb pb3"><svg viewBox="0 0 80 80"><path d="M10 60L25 35l15 15 12-20 18 30z"/></svg></div>
+        <div class="pb">
+          <div class="pcat">SaaS Dashboard</div>
+          <div class="ptit">AnalytiQ — Live Analytics</div>
+          <p class="pdesc">Real-time analytics platform with live data visualization, smart automated reports, and 3,000+ active users logging in monthly.</p>
+          <span class="ptag">React</span><span class="ptag">Chart.js</span><span class="ptag">PostgreSQL</span>
+        </div>
+      </div>
+      <div class="pj rv">
+        <div class="pthumb pb4"><svg viewBox="0 0 80 80"><rect x="12" y="18" width="56" height="44" rx="3"/><path d="M22 62v8M58 62v8M12 30h56"/></svg></div>
+        <div class="pb">
+          <div class="pcat">Corporate Website</div>
+          <div class="ptit">TechVision — Agency Site</div>
+          <p class="pdesc">Premium agency website with stunning 3D animations, headless CMS for easy content editing, and a contact system that generates qualified leads.</p>
+          <span class="ptag">Next.js</span><span class="ptag">Three.js</span><span class="ptag">Sanity</span>
+        </div>
+      </div>
+      <div class="pj rv d1">
+        <div class="pthumb pb5"><svg viewBox="0 0 80 80"><path d="M40 10c0 0-26 20-26 34a26 26 0 0 0 52 0C66 30 40 10 40 10z"/></svg></div>
+        <div class="pb">
+          <div class="pcat">Mobile PWA</div>
+          <div class="ptit">FitTrack — Health App</div>
+          <p class="pdesc">Progressive Web App for fitness tracking with AI-generated workout plans, daily habit tracking, and personal progress dashboards.</p>
+          <span class="ptag">React Native</span><span class="ptag">Firebase</span><span class="ptag">AI</span>
+        </div>
+      </div>
+      <div class="pj rv d2">
+        <div class="pthumb pb6"><svg viewBox="0 0 80 80"><polygon points="40,10 70,65 10,65"/><circle cx="40" cy="48" r="9"/></svg></div>
+        <div class="pb">
+          <div class="pcat">Automation</div>
+          <div class="ptit">FlowBot — CRM Automation</div>
+          <p class="pdesc">Intelligent CRM with AI-powered lead scoring, automated email sequences, and full sales pipeline management — reduced manual work by 60%.</p>
+          <span class="ptag">Python</span><span class="ptag">LangChain</span><span class="ptag">Zapier</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ WORK STYLE ══ -->
+<section id="workstyle">
+  <div class="inner">
+    <div class="s-head rv">
+      <div class="s-tag">How I Work</div>
+      <h2 class="s-title">Work Style &amp; Values</h2>
+      <p class="s-sub">My professional principles that make every project a great experience for both of us.</p>
+    </div>
+    <div class="wgrid">
+      <div class="ws rv">
+        <div class="wsi"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
+        <div class="wst">Remote-First</div>
+        <p class="wsd">I work seamlessly with clients in any country and any time zone. All communication is clear, documented, and always on schedule. You'll always know exactly where your project stands.</p>
+      </div>
+      <div class="ws rv d1">
+        <div class="wsi"><svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+        <div class="wst">Agile Mindset</div>
+        <p class="wsd">Projects are delivered in clear milestones so you can review progress, give feedback, and see real results — without waiting weeks for a big reveal that might miss the mark.</p>
+      </div>
+      <div class="ws rv">
+        <div class="wsi"><svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
+        <div class="wst">Code Quality</div>
+        <p class="wsd">Every line of code I write is clean, documented, and maintainable. When your business grows and new developers join your team, they'll thank you for choosing quality code from day one.</p>
+      </div>
+      <div class="ws rv d1">
+        <div class="wsi"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
+        <div class="wst">Continuous Learning</div>
+        <p class="wsd">Technology moves fast. I keep up with the latest frameworks, AI developments, and web standards — so your projects are always built with modern, future-proof solutions, not yesterday's tools.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ TOOLS ══ -->
+<section id="tools">
+  <div class="inner">
+    <div class="s-head rv">
+      <div class="s-tag">My Arsenal</div>
+      <h2 class="s-title">Tools &amp; Stack</h2>
+      <p class="s-sub">I choose tools that balance developer experience, performance, and real-world scalability — so your project ships fast and runs reliably.</p>
+    </div>
+    <div class="tgrid">
+      <div class="tc rv">
+        <div class="tci"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
+        <div class="tct">Development Environment</div>
+        <p class="tcd">VS Code, Git, and GitHub Actions power my workflow. Every project has version control, automated testing pipelines, and clean deployment scripts so nothing ever breaks in production.</p>
+        <div class="pills"><span class="pill">VS Code</span><span class="pill">Git</span><span class="pill">GitHub Actions</span><span class="pill">Docker</span></div>
+      </div>
+      <div class="tc rv d1">
+        <div class="tci"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+        <div class="tct">Frontend Ecosystem</div>
+        <p class="tcd">React and Next.js for powerful interfaces, Tailwind CSS for beautiful styling, and Storybook for building reusable component libraries. Fast pages that score 95+ on Google PageSpeed.</p>
+        <div class="pills"><span class="pill">React</span><span class="pill">Next.js</span><span class="pill">TypeScript</span><span class="pill">Tailwind</span></div>
+      </div>
+      <div class="tc rv d2">
+        <div class="tci"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></div>
+        <div class="tct">Backend &amp; Cloud</div>
+        <p class="tcd">Node.js and Express for fast APIs, PostgreSQL and MongoDB for databases, AWS and Vercel for hosting. Production systems that handle thousands of users without breaking a sweat.</p>
+        <div class="pills"><span class="pill">Node.js</span><span class="pill">PostgreSQL</span><span class="pill">AWS</span><span class="pill">Vercel</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ TESTIMONIALS ══ -->
+<section id="testimonials">
+  <div class="inner">
+    <div class="s-head rv">
+      <div class="s-tag">Client Reviews</div>
+      <h2 class="s-title">What Clients Say</h2>
+      <p class="s-sub">Don't take my word for it — hear from the clients who trusted AS Developers with their digital vision.</p>
+    </div>
+    <div class="tstg">
+      <div class="tst rv">
+        <div class="stars"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+        <div class="qm">"</div>
+        <p class="ttxt">Adeel delivered an exceptional e-commerce platform that exceeded every expectation. Code quality is remarkable and the UI looks better than anything I imagined. Sales increased 40% in the first month.</p>
+        <div class="tauth"><div class="tav">AK</div><div><div class="tname">Ahmed Khan</div><div class="trole">CEO, FashionHouse PK</div></div></div>
+      </div>
+      <div class="tst rv d1">
+        <div class="stars"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+        <div class="qm">"</div>
+        <p class="ttxt">The AI chatbot Adeel built is saving us 20 hours every week — it handles hundreds of customer questions automatically. His technical knowledge is outstanding and communication was always crystal clear.</p>
+        <div class="tauth"><div class="tav">SR</div><div><div class="tname">Sarah Rahman</div><div class="trole">Founder, TechStart Dubai</div></div></div>
+      </div>
+      <div class="tst rv d2">
+        <div class="stars"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+        <div class="qm">"</div>
+        <p class="ttxt">Professional, talented, and incredibly reliable. Adeel rebuilt our entire website in 3 weeks with better design and performance than we imagined. We will definitely hire him again for our next project.</p>
+        <div class="tauth"><div class="tav">MZ</div><div><div class="tname">Muhammad Zain</div><div class="trole">Director, ZainCorp Ltd</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CONTACT ══ -->
+<section id="contact">
+  <div class="inner">
+    <div class="s-head rv">
+      <div class="s-tag">Get In Touch</div>
+      <h2 class="s-title">Start Your Project</h2>
+      <p class="s-sub">Have a project in mind? Let's talk. I respond within 2–4 hours on WhatsApp and email.</p>
+    </div>
+    <div class="cgrid2">
+      <div class="cifo rv">
+        <h3>Let's Build<br><em>Something Great</em></h3>
+        <p>Whether you have a detailed specification or just a rough idea — I'll help you figure out the best approach and turn it into reality. Direct communication, no middlemen, transparent pricing.</p>
+        <div class="clinks">
+          <a href="mailto:adeela524@gmail.com" class="clnk">
+            <div class="clnk-ic"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+            <div><div class="clbl">Email — Responds in 2–4 hrs</div><div class="cval">adeela524@gmail.com</div></div>
+          </a>
+          <a href="https://wa.me/923023181415" target="_blank" rel="noopener" class="clnk">
+            <div class="clnk-ic"><svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></div>
+            <div><div class="clbl">WhatsApp — Opens directly</div><div class="cval">+92 302 3181 415</div></div>
+          </a>
+          <a href="https://www.linkedin.com/in/adeel-developer-78b6183b5" target="_blank" rel="noopener" class="clnk">
+            <div class="clnk-ic"><svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></div>
+            <div><div class="clbl">LinkedIn Profile</div><div class="cval">adeel-developer-78b6183b5</div></div>
+          </a>
+        </div>
+      </div>
+      <div class="cform rv d1">
+        <h3>Send a Message</h3>
+        <div class="frow">
+          <div class="fg"><label>First Name</label><input type="text" id="fn" placeholder="Your name"/></div>
+          <div class="fg"><label>Last Name</label><input type="text" id="ln" placeholder="Last name"/></div>
+        </div>
+        <div class="fg"><label>Email Address</label><input type="email" id="em" placeholder="you@example.com"/></div>
+        <div class="fg"><label>Service Needed</label>
+          <select id="sv">
+            <option value="">Select a service...</option>
+            <option>Website Development</option><option>AI Chatbot</option>
+            <option>Full-Stack Application</option><option>E-Commerce Solution</option>
+            <option>AI / ML Integration</option><option>SEO &amp; Performance</option><option>Other</option>
+          </select>
+        </div>
+        <div class="fg"><label>Tell me about your project</label><textarea id="ms" placeholder="Describe your project, goals, timeline, and budget. The more detail you share, the better I can help you..."></textarea></div>
+        <button class="fbtn" onclick="sendForm()">Send Message →</button>
+        <div class="fok" id="fok">✓ Message sent! I'll respond within 2–4 hours.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <div class="ft-in">
+    <div class="ft-top">
+      <div class="fc">
+        <a href="#hero" class="logo" style="margin-bottom:14px;display:inline-flex">
+          <div class="logo-mark" style="width:36px;height:36px;font-size:.9rem">AS</div>
+          <div class="logo-text" style="margin-left:10px"><span class="l1" style="font-size:1rem">AS Developers</span><span class="l2">Web · AI · Full-Stack</span></div>
+        </a>
+        <p style="font-size:.79rem;color:var(--text2);line-height:1.9;max-width:230px;margin-top:10px;font-weight:400">Building premium digital products for ambitious clients worldwide. Quality, speed, results.</p>
+      </div>
+      <div class="fc"><h4>Services</h4><ul>
+        <li><a href="#services">Website Development</a></li>
+        <li><a href="#services">AI Chatbot</a></li>
+        <li><a href="#services">Full-Stack Apps</a></li>
+        <li><a href="#services">E-Commerce</a></li>
+        <li><a href="#services">SEO &amp; Performance</a></li>
+      </ul></div>
+      <div class="fc"><h4>Pages</h4><ul>
+        <li><a href="#about">About</a></li>
+        <li><a href="#portfolio">Portfolio</a></li>
+        <li><a href="#career">Career</a></li>
+        <li><a href="#workstyle">Work Style</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul></div>
+      <div class="fc"><h4>Connect</h4><ul>
+        <li><a href="https://www.linkedin.com/in/adeel-developer-78b6183b5" target="_blank" rel="noopener">LinkedIn</a></li>
+        <li><a href="https://wa.me/923023181415" target="_blank" rel="noopener">WhatsApp</a></li>
+        <li><a href="mailto:adeela524@gmail.com">Email</a></li>
+        <li><a href="#">GitHub</a></li>
+        <li><a href="#">Instagram</a></li>
+      </ul></div>
+    </div>
+    <div class="ft-bot">
+      <span class="ftcopy">© 2025 AS Developers — Adeel · All rights reserved</span>
+      <div class="ftlnks"><a href="#">Privacy Policy</a><a href="#">Terms of Service</a></div>
+    </div>
+  </div>
+</footer>
+
+<!-- BACK TO TOP -->
+<button class="btt" id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+  <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+
+<!-- ══ AI CHATBOT ══ -->
+<button class="chat-fab" id="chatFab" onclick="toggleChat()" title="Chat with AI Assistant">
+  <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+  <div class="chat-badge"></div>
+</button>
+
+<div class="chat-window" id="chatWin">
+  <div class="chat-head">
+    <div class="chat-av">AI</div>
+    <div class="chat-hinfo">
+      <h4>AS Developers Assistant</h4>
+      <span>Online — Ask me anything</span>
+    </div>
+    <button class="chat-close" onclick="toggleChat()">
+      <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="chat-msgs" id="chatMsgs">
+    <div class="msg msg-bot">👋 Hi! I'm the AS Developers AI assistant. Ask me about Adeel's services, pricing, how to start a project, or anything else!</div>
+  </div>
+  <div class="chat-footer">
+    <input class="chat-input" id="chatInput" placeholder="Ask me anything..." onkeydown="if(event.key==='Enter')sendChat()"/>
+    <button class="chat-send" onclick="sendChat()">
+      <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+    </button>
+  </div>
+  <div class="chat-note">Powered by Claude AI · Always available</div>
+</div>
+
+<!-- ══ SCRIPTS ══ -->
+<script>
+/* ─────────────────────────────────
+   SILK RIBBON BACKGROUND CANVAS
+───────────────────────────────── */
+(function(){
+  const C=document.getElementById('bgc');
+  const ctx=C.getContext('2d');
+  let W,H;
+  function sz(){W=C.width=window.innerWidth;H=C.height=window.innerHeight}
+  sz();window.addEventListener('resize',sz);
+
+  function ribbon(pts,w,r,g,b){
+    const s=60;
+    for(let i=0;i<s-1;i++){
+      const t0=i/s,t1=(i+1)/s;
+      const bx=s=>(1-s)**3*pts[0]+(3*(1-s)**2*s)*pts[2]+(3*(1-s)*s**2)*pts[4]+s**3*pts[6];
+      const by=s=>(1-s)**3*pts[1]+(3*(1-s)**2*s)*pts[3]+(3*(1-s)*s**2)*pts[5]+s**3*pts[7];
+      const dx=bx(t1)-bx(t0),dy=by(t1)-by(t0),l=Math.sqrt(dx*dx+dy*dy)||1;
+      const nx=-dy/l*w,ny=dx/l*w;
+      const cx0=bx(t0),cy0=by(t0);
+      const gr=ctx.createLinearGradient(cx0+nx,cy0+ny,cx0-nx,cy0-ny);
+      gr.addColorStop(0,`rgba(${r*.25|0},0,0,.8)`);
+      gr.addColorStop(.35,`rgba(${r*.75|0},${g*.1|0},${b*.1|0},.9)`);
+      gr.addColorStop(.5,`rgba(${r},${g},${b},1)`);
+      gr.addColorStop(.52,`rgba(${Math.min(255,r+55)},${g+5},${b+5},1)`);
+      gr.addColorStop(.65,`rgba(${r*.7|0},0,0,.9)`);
+      gr.addColorStop(1,`rgba(${r*.15|0},0,0,.75)`);
+      ctx.fillStyle=gr;
+      ctx.beginPath();
+      ctx.moveTo(cx0+nx,cy0+ny);ctx.lineTo(bx(t1)+nx,by(t1)+ny);
+      ctx.lineTo(bx(t1)-nx,by(t1)-ny);ctx.lineTo(cx0-nx,cy0-ny);
+      ctx.closePath();ctx.fill();
+    }
+  }
+
+  let sc=0;window.addEventListener('scroll',()=>sc=window.scrollY);
+
+  function draw(ts){
+    requestAnimationFrame(draw);
+    ctx.clearRect(0,0,W,H);
+    const isDark=document.documentElement.getAttribute('data-theme')==='dark';
+
+    if(isDark){
+      // Dark BG
+      const bg=ctx.createLinearGradient(0,0,W,0);
+      bg.addColorStop(0,'#130000');bg.addColorStop(.42,'#0c0000');bg.addColorStop(.6,'#080708');bg.addColorStop(1,'#070709');
+      ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+      // glow
+      const g=ctx.createRadialGradient(W*.2,H*.55,0,W*.2,H*.55,W*.38);
+      g.addColorStop(0,'rgba(150,12,8,.48)');g.addColorStop(.55,'rgba(100,5,4,.18)');g.addColorStop(1,'rgba(0,0,0,0)');
+      ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+    } else {
+      const bg=ctx.createLinearGradient(0,0,W,0);
+      bg.addColorStop(0,'#2a0a08');bg.addColorStop(.45,'#1a0403');bg.addColorStop(.6,'#f0ece8');bg.addColorStop(1,'#f5f3f0');
+      ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+      const g=ctx.createRadialGradient(W*.18,H*.5,0,W*.18,H*.5,W*.35);
+      g.addColorStop(0,'rgba(192,57,43,.35)');g.addColorStop(.6,'rgba(140,30,20,.1)');g.addColorStop(1,'rgba(0,0,0,0)');
+      ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+    }
+
+    const a=ts*.0003;
+    const sw=W*.5,sh=H;
+    ribbon([-W*.05,sh*.1, sw*.3+Math.sin(a)*8,sh*.32, sw*.62+Math.cos(a*.8)*7,sh*.58, sw*.88,sh*.82],
+      sh*.17+Math.sin(a*.5)*4, 200,18,12);
+    ribbon([-W*.03,sh*.38, sw*.35+Math.cos(a)*7,sh*.15, sw*.65+Math.sin(a*.9)*6,sh*.44, sw*.95,sh*.68],
+      sh*.1+Math.cos(a*.6)*3, 170,12,8);
+    ribbon([W*.04,sh*1.02, sw*.55+Math.sin(a*.8)*8,sh*.8, sw*.25+Math.cos(a)*6,sh*.46, sw*.7,sh*.08],
+      sh*.12+Math.sin(a*.55)*4, 185,15,10);
+
+    // Glossy ball
+    const br=sh*.26,bx=W*.28+Math.sin(a*.28)*6,by=H*.9;
+    const bg2=ctx.createRadialGradient(bx-br*.3,by-br*.3,br*.02,bx,by,br);
+    bg2.addColorStop(0,'rgba(220,50,30,.48)');bg2.addColorStop(.35,'rgba(155,15,10,.55)');
+    bg2.addColorStop(.7,'rgba(90,4,4,.4)');bg2.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle=bg2;ctx.beginPath();ctx.arc(bx,by,br,0,Math.PI*2);ctx.fill();
+    const hl=ctx.createRadialGradient(bx-br*.38,by-br*.38,0,bx-br*.2,by-br*.2,br*.5);
+    hl.addColorStop(0,'rgba(255,100,80,.22)');hl.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle=hl;ctx.beginPath();ctx.arc(bx,by,br,0,Math.PI*2);ctx.fill();
+
+    // Fade right
+    const fd=ctx.createLinearGradient(W*.35,0,W*.65,0);
+    if(isDark){fd.addColorStop(0,'rgba(7,7,9,0)');fd.addColorStop(1,'rgba(7,7,9,.96)');}
+    else{fd.addColorStop(0,'rgba(245,243,240,0)');fd.addColorStop(1,'rgba(245,243,240,.96)');}
+    ctx.fillStyle=fd;ctx.fillRect(0,0,W,H);
+  }
+  requestAnimationFrame(draw);
+})();
+
+/* ─────────────────────────────────
+   THEME TOGGLE
+───────────────────────────────── */
+function toggleTheme(){
+  const h=document.documentElement;
+  const dark=h.getAttribute('data-theme')==='dark';
+  h.setAttribute('data-theme',dark?'light':'dark');
+  document.getElementById('themeIcon').innerHTML=dark?
+    '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>':
+    '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+}
+
+/* ─────────────────────────────────
+   NAV
+───────────────────────────────── */
+function toggleMob(){document.getElementById('mob').classList.toggle('open')}
+function closeMob(){document.getElementById('mob').classList.remove('open')}
+window.addEventListener('scroll',()=>{
+  document.getElementById('nav').classList.toggle('sc',window.scrollY>50);
+  document.getElementById('btt').classList.toggle('show',window.scrollY>500);
+});
+
+/* ─────────────────────────────────
+   REVEAL + BARS + COUNTERS
+───────────────────────────────── */
+const io=new IntersectionObserver(e=>{
+  e.forEach(x=>{
+    if(!x.isIntersecting)return;
+    x.target.classList.add('vis');
+    x.target.querySelectorAll('.bfill').forEach(b=>b.style.width=b.dataset.w+'%');
+    x.target.querySelectorAll('[data-count]').forEach(n=>{
+      const tgt=+n.dataset.count;
+      const sfx=n.parentElement.querySelector('.sl')?.textContent.includes('%')?'':'+';
+      let c=0;const step=tgt/65;
+      const t=setInterval(()=>{c=Math.min(c+step,tgt);n.textContent=Math.floor(c)+sfx;if(c>=tgt)clearInterval(t);},20);
+    });
+    io.unobserve(x.target);
+  });
+},{threshold:.1});
+document.querySelectorAll('.rv,.sbox').forEach(el=>io.observe(el));
+
+/* ─────────────────────────────────
+   CONTACT FORM
+───────────────────────────────── */
+function sendForm(){
+  const f=document.getElementById('fn').value.trim();
+  const em=document.getElementById('em').value.trim();
+  const ms=document.getElementById('ms').value.trim();
+  if(!f||!em||!ms){alert('Please fill in your name, email and project details.');return;}
+  const ok=document.getElementById('fok');ok.style.display='block';
+  ['fn','ln','em','sv','ms'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  setTimeout(()=>ok.style.display='none',6000);
+}
+
+/* ─────────────────────────────────
+   AI CHATBOT
+───────────────────────────────── */
+const SYSTEM_PROMPT = `You are the AI assistant for AS Developers, a premium web and AI development studio founded by Adeel, based in Pakistan and serving clients worldwide.
+
+About AS Developers:
+- Founder: Adeel (also goes by "AS")
+- Based in Pakistan, works remotely with clients globally (UAE, Saudi Arabia, UK, USA, etc.)
+- 5+ years of experience, 30+ projects shipped, 98% client satisfaction
+- Contact: adeela524@gmail.com | WhatsApp: +92 302 3181 415 | LinkedIn: linkedin.com/in/adeel-developer-78b6183b5
+
+Services offered:
+1. Website Development - modern React/Next.js sites, WordPress, landing pages
+2. AI Chatbot Development - GPT-4 powered chatbots for support and lead capture
+3. Full-Stack Applications - complete web apps with backend and database
+4. E-Commerce Solutions - Shopify, WooCommerce, custom stores with Stripe
+5. AI & Machine Learning - ML integrations, automation, AI-powered tools
+6. SEO & Performance - Google rankings, Core Web Vitals, speed optimization
+
+Tech stack: React, Next.js, Vue.js, TypeScript, Node.js, Python, PostgreSQL, MongoDB, AWS, Vercel, Docker, OpenAI, LangChain, Tailwind CSS
+
+Be helpful, friendly, and professional. Answer questions about services, pricing (say pricing varies by project scope and to contact Adeel directly for a quote), timeline, and how to get started. Encourage visitors to reach out via WhatsApp or email. Keep responses concise and helpful. Speak in both English and Urdu if the user writes in Urdu.`;
+
+let chatHistory = [];
+let chatOpen = false;
+
+function toggleChat(){
+  chatOpen = !chatOpen;
+  document.getElementById('chatWin').classList.toggle('open', chatOpen);
+}
+
+function appendMsg(text, role){
+  const msgs = document.getElementById('chatMsgs');
+  const div = document.createElement('div');
+  div.className = 'msg ' + (role==='user'?'msg-user':'msg-bot');
+  div.textContent = text;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+  return div;
+}
+
+async function sendChat(){
+  const input = document.getElementById('chatInput');
+  const text = input.value.trim();
+  if(!text) return;
+  input.value = '';
+
+  appendMsg(text, 'user');
+  chatHistory.push({role:'user', content: text});
+
+  // Typing indicator
+  const msgs = document.getElementById('chatMsgs');
+  const typing = document.createElement('div');
+  typing.className = 'msg msg-typing';
+  typing.textContent = 'Typing';
+  msgs.appendChild(typing);
+  msgs.scrollTop = msgs.scrollHeight;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 400,
+        system: SYSTEM_PROMPT,
+        messages: chatHistory
+      })
+    });
+    const data = await res.json();
+    typing.remove();
+    const reply = data.content?.[0]?.text || "I'm sorry, I couldn't process that. Please contact Adeel directly at adeela524@gmail.com or WhatsApp +92 302 3181 415.";
+    chatHistory.push({role:'assistant', content: reply});
+    appendMsg(reply, 'bot');
+  } catch(e) {
+    typing.remove();
+    appendMsg("Sorry, I'm having trouble connecting right now. Please reach out directly via WhatsApp: +92 302 3181 415 or email: adeela524@gmail.com", 'bot');
+  }
+}
+</script>
+</body>
+</html>
